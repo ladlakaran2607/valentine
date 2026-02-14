@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>For You, Jyoti 💕</title>
+
+<!-- WhatsApp link preview -->
+<meta property="og:title" content="Hey Jyoti 💕 Swipe to see what I have to say...">
+<meta property="og:description" content="Someone special made this for you 🎁">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png">
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    touch-action: manipulation;
+  }
+
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #1a0011, #2d0a1e, #1a0015);
+    font-family: 'Quicksand', sans-serif;
+    padding: 20px;
+    position: relative;
+  }
+
+  /* ===== SPARKLE BG ===== */
+  .sparkle-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .sparkle {
+    position: absolute;
+    opacity: 0.15;
+    animation: sparkleFloat linear infinite;
+  }
+
+  @keyframes sparkleFloat {
+    0% { transform: translateY(100vh) rotate(0) scale(0.5); opacity: 0; }
+    15% { opacity: 0.2; }
+    85% { opacity: 0.2; }
+    100% { transform: translateY(-10vh) rotate(360deg) scale(1); opacity: 0; }
+  }
+
+  /* ===== TOP AREA ===== */
+  .top-area {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .top-area .for-you {
+    font-family: 'Caveat', cursive;
+    font-size: 1.6rem;
+    color: #ff8fa3;
+    text-shadow: 0 0 25px rgba(255, 107, 138, 0.3);
+  }
+
+  /* Dots indicator */
+  .dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 143, 163, 0.2);
+    transition: all 0.4s ease;
+  }
+
+  .dot.active {
+    background: #ff6b8a;
+    width: 24px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(255, 107, 138, 0.4);
+  }
+
+  /* ===== CAROUSEL ===== */
+  .carousel-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 360px;
+    height: 420px;
+    perspective: 1000px;
+  }
+
+  .card-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 36px 28px;
+    text-align: center;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.4s ease;
+    will-change: transform, opacity;
+    touch-action: none;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .card .card-emoji {
+    font-size: 56px;
+    margin-bottom: 20px;
+  }
+
+  .card .card-number {
+    font-family: 'Caveat', cursive;
+    font-size: 0.9rem;
+    opacity: 0.5;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+  }
+
+  .card .card-text {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    font-weight: 500;
+  }
+
+  .card .card-text strong {
+    font-weight: 700;
+  }
+
+  /* Card themes */
+  .card-1 {
+    background: linear-gradient(160deg, #fff5f7, #ffe8ee);
+    border: 1px solid rgba(255, 107, 138, 0.15);
+    box-shadow: 0 8px 40px rgba(255, 107, 138, 0.12);
+  }
+  .card-1 .card-number { color: #d4627a; }
+  .card-1 .card-text { color: #7a2845; }
+
+  .card-2 {
+    background: linear-gradient(160deg, #fff0f5, #ffe0ec);
+    border: 1px solid rgba(233, 30, 99, 0.12);
+    box-shadow: 0 8px 40px rgba(233, 30, 99, 0.1);
+  }
+  .card-2 .card-number { color: #c0385a; }
+  .card-2 .card-text { color: #6d2040; }
+
+  .card-3 {
+    background: linear-gradient(160deg, #fce4ec, #f8bbd0);
+    border: 1px solid rgba(233, 30, 99, 0.15);
+    box-shadow: 0 8px 40px rgba(233, 30, 99, 0.12);
+  }
+  .card-3 .card-number { color: #ad1457; }
+  .card-3 .card-text { color: #5c1530; }
+
+  .card-4 {
+    background: linear-gradient(160deg, #fce4ec, #f48fb1);
+    border: 1px solid rgba(233, 30, 99, 0.2);
+    box-shadow: 0 8px 40px rgba(233, 30, 99, 0.15);
+  }
+  .card-4 .card-number { color: #ad1457; }
+  .card-4 .card-text { color: #4a0e25; }
+
+  .card-5 {
+    background: linear-gradient(160deg, #f8bbd0, #f06292);
+    border: 1px solid rgba(233, 30, 99, 0.25);
+    box-shadow: 0 8px 40px rgba(233, 30, 99, 0.18);
+  }
+  .card-5 .card-number { color: rgba(255,255,255,0.6); }
+  .card-5 .card-text { color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.1); }
+
+  /* Stacked behind cards - slight scale/offset */
+  .card.behind-1 {
+    transform: scale(0.95) translateY(12px);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .card.behind-2 {
+    transform: scale(0.9) translateY(24px);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .card.gone {
+    pointer-events: none;
+  }
+
+  /* ===== SWIPE HINT ===== */
+  .swipe-hint {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+    color: rgba(255, 200, 210, 0.4);
+    font-size: 0.85rem;
+    animation: hintPulse 2s ease-in-out infinite;
+    transition: opacity 0.4s ease;
+  }
+
+  .swipe-hint.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @keyframes hintPulse {
+    0%, 100% { transform: translateX(0); opacity: 0.5; }
+    50% { transform: translateX(-6px); opacity: 1; }
+  }
+
+  .swipe-hint .arrow-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 107, 138, 0.12);
+    border: 1px solid rgba(255, 107, 138, 0.2);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ===== FINALE SCREEN ===== */
+  .finale-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 100;
+    background: linear-gradient(160deg, #1a0011, #2d0a1e, #1a0015);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+  }
+
+  .finale-screen.show {
+    display: flex;
+    animation: fadeIn 0.8s ease;
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  .finale-content {
+    text-align: center;
+    animation: finaleEntry 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes finaleEntry {
+    0% { transform: scale(0.5) translateY(30px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  .finale-content .finale-emoji {
+    font-size: 72px;
+    animation: heartbeat 1.2s ease-in-out infinite;
+    margin-bottom: 20px;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.1); }
+  }
+
+  .finale-content h1 {
+    font-family: 'Caveat', cursive;
+    font-size: 2.8rem;
+    color: #ff8fa3;
+    margin-bottom: 6px;
+    text-shadow: 0 0 40px rgba(255, 107, 138, 0.4);
+    line-height: 1.2;
+  }
+
+  .finale-content .finale-sub {
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem;
+    color: #ff6b8a;
+    margin-bottom: 24px;
+    text-shadow: 0 0 30px rgba(255, 107, 138, 0.3);
+  }
+
+  .finale-content .finale-msg {
+    color: rgba(255, 200, 210, 0.7);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 320px;
+    margin: 0 auto 20px;
+  }
+
+  .finale-content .finale-sign {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: #ff8fa3;
+    margin-top: 16px;
+  }
+
+  .finale-content .finale-hearts {
+    font-size: 28px;
+    margin-top: 8px;
+    animation: heartbeat 1.2s ease-in-out infinite;
+  }
+
+  /* Celebration particles */
+  .celebration-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99;
+    animation: particleRise 3s ease-out forwards;
+  }
+
+  @keyframes particleRise {
+    0% { transform: translateY(0) rotate(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-100vh) rotate(540deg) scale(0); opacity: 0; }
+  }
+
+  .confetti-piece {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99;
+    animation: confettiDrop 3.5s ease-out forwards;
+  }
+
+  @keyframes confettiDrop {
+    0% { transform: translateY(-5vh) rotate(0); opacity: 1; }
+    100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Mobile tweaks */
+  @media (max-width: 380px) {
+    .carousel-wrapper { max-width: 310px; height: 390px; }
+    .card { padding: 28px 22px; }
+    .card .card-emoji { font-size: 44px; }
+    .card .card-text { font-size: 1.05rem; }
+    .finale-content h1 { font-size: 2.2rem; }
+  }
+
+  @media (max-height: 680px) {
+    .carousel-wrapper { height: 360px; }
+    .top-area { margin-bottom: 16px; }
+    .swipe-hint { margin-top: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sparkle-bg" id="sparkleBg"></div>
+
+<!-- Top area -->
+<div class="top-area">
+  <div class="for-you">For you, Jyoti ✨</div>
+  <div class="dots" id="dots">
+    <div class="dot active" data-i="0"></div>
+    <div class="dot" data-i="1"></div>
+    <div class="dot" data-i="2"></div>
+    <div class="dot" data-i="3"></div>
+    <div class="dot" data-i="4"></div>
+  </div>
+</div>
+
+<!-- Carousel -->
+<div class="carousel-wrapper" id="carouselWrapper">
+  <div class="card-stack" id="cardStack">
+
+    <div class="card card-5 behind-2" data-index="4">
+      <div class="card-emoji">💍</div>
+      <div class="card-number">5 / 5</div>
+      <div class="card-text">
+        I can't wait to <strong>annoy you</strong><br>
+        for the rest of our lives. 😏💕
+      </div>
+    </div>
+
+    <div class="card card-4 behind-2" data-index="3">
+      <div class="card-emoji">🥹</div>
+      <div class="card-number">4 / 5</div>
+      <div class="card-text">
+        You're my best friend,<br>
+        my forever person,<br>
+        and soon... <strong>my wife.</strong>
+      </div>
+    </div>
+
+    <div class="card card-3 behind-2" data-index="2">
+      <div class="card-emoji">😏</div>
+      <div class="card-number">3 / 5</div>
+      <div class="card-text">
+        But honestly?<br>
+        Every moment with you is worth it.<br><br>
+        Even the ones where you take<br>
+        <strong>2 hours to get ready.</strong> 💅
+      </div>
+    </div>
+
+    <div class="card card-2 behind-1" data-index="1">
+      <div class="card-emoji">😅</div>
+      <div class="card-number">2 / 5</div>
+      <div class="card-text">
+        Ever since I met you,<br>
+        my life has been...<br><br>
+        <strong>significantly more expensive.</strong> 🛍️
+      </div>
+    </div>
+
+    <div class="card card-1" data-index="0">
+      <div class="card-emoji">💌</div>
+      <div class="card-number">1 / 5</div>
+      <div class="card-text">
+        Dear Jyoti...<br><br>
+        I wanted to tell you<br>
+        <strong>something important</strong> today.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Swipe hint -->
+<div class="swipe-hint" id="swipeHint">
+  <span class="arrow-icon">←</span>
+  <span>Swipe left to continue</span>
+</div>
+
+<!-- Finale screen -->
+<div class="finale-screen" id="finaleScreen">
+  <div class="finale-content">
+    <div class="finale-emoji">💖</div>
+    <h1>Happy Valentine's Day</h1>
+    <div class="finale-sub">Jyoti! 🌹</div>
+    <div class="finale-msg">
+      From the first moment to forever —<br>
+      you're the only one I choose.<br>
+      Today, tomorrow, and every day after.
+    </div>
+    <div class="finale-sign">Forever yours, Karan 💌</div>
+    <div class="finale-hearts">💕💖💕</div>
+  </div>
+</div>
+
+<script>
+  // ===== SPARKLE BG =====
+  const sparkleBg = document.getElementById('sparkleBg');
+  const sparkleEmojis = ['✨', '💫', '💕', '💗', '♥️', '🌸', '⭐'];
+
+  function createSparkle() {
+    const el = document.createElement('span');
+    el.className = 'sparkle';
+    el.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.fontSize = (12 + Math.random() * 14) + 'px';
+    el.style.animationDuration = (10 + Math.random() * 14) + 's';
+    el.style.animationDelay = Math.random() * 2 + 's';
+    sparkleBg.appendChild(el);
+    setTimeout(() => el.remove(), 26000);
+  }
+  for (let i = 0; i < 10; i++) setTimeout(createSparkle, i * 350);
+  setInterval(createSparkle, 2200);
+
+  // ===== CAROUSEL LOGIC =====
+  const cards = Array.from(document.querySelectorAll('.card'));
+  const totalCards = 5;
+  let currentIndex = 0;
+  let startX = 0, startY = 0, deltaX = 0;
+  let isSwiping = false;
+  let isAnimating = false;
+
+  const dots = document.querySelectorAll('.dot');
+  const swipeHint = document.getElementById('swipeHint');
+
+  function updateStack() {
+    cards.forEach(card => {
+      const idx = parseInt(card.dataset.index);
+      const diff = idx - currentIndex;
+
+      card.classList.remove('behind-1', 'behind-2', 'gone');
+      card.style.transform = '';
+      card.style.opacity = '';
+      card.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease';
+
+      if (idx < currentIndex) {
+        card.classList.add('gone');
+        card.style.transform = 'translateX(-120%) rotate(-8deg)';
+        card.style.opacity = '0';
+      } else if (diff === 0) {
+        card.style.transform = 'scale(1) translateY(0)';
+        card.style.opacity = '1';
+        card.style.zIndex = totalCards - diff;
+      } else if (diff === 1) {
+        card.classList.add('behind-1');
+        card.style.zIndex = totalCards - diff;
+      } else {
+        card.classList.add('behind-2');
+        card.style.zIndex = totalCards - diff;
+      }
+    });
+
+    // Update dots
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === currentIndex);
+    });
+
+    // Hide swipe hint on last card after swipe
+    if (currentIndex >= totalCards) {
+      swipeHint.classList.add('hidden');
+    }
+  }
+
+  function getCurrentCard() {
+    return cards.find(c => parseInt(c.dataset.index) === currentIndex);
+  }
+
+  // Touch handlers
+  function onTouchStart(e) {
+    if (isAnimating || currentIndex >= totalCards) return;
+    const card = getCurrentCard();
+    if (!card) return;
+
+    const touch = e.touches ? e.touches[0] : e;
+    startX = touch.clientX;
+    startY = touch.clientY;
+    deltaX = 0;
+    isSwiping = false;
+
+    card.style.transition = 'none';
+  }
+
+  function onTouchMove(e) {
+    if (isAnimating || currentIndex >= totalCards) return;
+    const card = getCurrentCard();
+    if (!card) return;
+
+    const touch = e.touches ? e.touches[0] : e;
+    deltaX = touch.clientX - startX;
+    const deltaY = touch.clientY - startY;
+
+    // Determine if horizontal swipe
+    if (!isSwiping && Math.abs(deltaX) > 8) {
+      isSwiping = true;
+    }
+
+    if (!isSwiping) return;
+    e.preventDefault();
+
+    // Only allow left swipe (negative deltaX)
+    const clampedDelta = Math.min(deltaX, 0);
+    const rotation = clampedDelta * 0.04;
+    const opacity = Math.max(1 - Math.abs(clampedDelta) / 400, 0.3);
+
+    card.style.transform = `translateX(${clampedDelta}px) rotate(${rotation}deg)`;
+    card.style.opacity = opacity;
+
+    // Promote the card behind
+    const nextCard = cards.find(c => parseInt(c.dataset.index) === currentIndex + 1);
+    if (nextCard) {
+      const progress = Math.min(Math.abs(clampedDelta) / 200, 1);
+      const scale = 0.95 + progress * 0.05;
+      const ty = 12 - progress * 12;
+      nextCard.style.transition = 'none';
+      nextCard.style.transform = `scale(${scale}) translateY(${ty}px)`;
+      nextCard.style.opacity = 0.6 + progress * 0.4;
+    }
+  }
+
+  function onTouchEnd() {
+    if (isAnimating || currentIndex >= totalCards) return;
+    const card = getCurrentCard();
+    if (!card) return;
+
+    isSwiping = false;
+
+    // Threshold to dismiss
+    if (deltaX < -80) {
+      dismissCard(card);
+    } else {
+      // Snap back
+      card.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.35s ease';
+      card.style.transform = 'scale(1) translateY(0)';
+      card.style.opacity = '1';
+
+      const nextCard = cards.find(c => parseInt(c.dataset.index) === currentIndex + 1);
+      if (nextCard) {
+        nextCard.style.transition = 'transform 0.35s ease, opacity 0.35s ease';
+        nextCard.style.transform = 'scale(0.95) translateY(12px)';
+        nextCard.style.opacity = '0.6';
+      }
+    }
+  }
+
+  function dismissCard(card) {
+    isAnimating = true;
+
+    card.style.transition = 'transform 0.4s cubic-bezier(0.55, 0.06, 0.68, 0.19), opacity 0.4s ease';
+    card.style.transform = 'translateX(-120%) rotate(-12deg)';
+    card.style.opacity = '0';
+
+    currentIndex++;
+
+    setTimeout(() => {
+      isAnimating = false;
+      if (currentIndex >= totalCards) {
+        // Show finale
+        setTimeout(showFinale, 300);
+      } else {
+        updateStack();
+      }
+    }, 400);
+
+    // Update dots immediately
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === currentIndex);
+    });
+  }
+
+  // Bind events to the wrapper
+  const wrapper = document.getElementById('carouselWrapper');
+  wrapper.addEventListener('touchstart', onTouchStart, { passive: true });
+  wrapper.addEventListener('touchmove', onTouchMove, { passive: false });
+  wrapper.addEventListener('touchend', onTouchEnd);
+
+  // Mouse support for testing
+  wrapper.addEventListener('mousedown', onTouchStart);
+  wrapper.addEventListener('mousemove', (e) => {
+    if (e.buttons === 1) onTouchMove(e);
+  });
+  wrapper.addEventListener('mouseup', onTouchEnd);
+  wrapper.addEventListener('mouseleave', onTouchEnd);
+
+  // Initial stack
+  updateStack();
+
+  // ===== FINALE =====
+  function showFinale() {
+    document.getElementById('finaleScreen').classList.add('show');
+    swipeHint.classList.add('hidden');
+    launchCelebration();
+  }
+
+  function launchCelebration() {
+    const emojis = ['💕', '💖', '💗', '❤️', '💘', '💝', '✨', '🥰', '🌹', '🌸'];
+    const colors = ['#ff6b8a', '#ff3366', '#e91e63', '#ff8fa3', '#ffd1dc', '#ffb6c1', '#ff69b4', '#fff'];
+
+    for (let i = 0; i < 40; i++) {
+      setTimeout(() => {
+        const el = document.createElement('span');
+        el.className = 'celebration-particle';
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.left = Math.random() * 100 + '%';
+        el.style.bottom = '-5%';
+        el.style.fontSize = (18 + Math.random() * 24) + 'px';
+        el.style.animationDuration = (2 + Math.random() * 2) + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 4500);
+      }, i * 70);
+    }
+
+    for (let i = 0; i < 60; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.left = Math.random() * 100 + '%';
+        el.style.background = colors[Math.floor(Math.random() * colors.length)];
+        el.style.width = (6 + Math.random() * 8) + 'px';
+        el.style.height = (6 + Math.random() * 8) + 'px';
+        el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        el.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 5000);
+      }, i * 50);
+    }
+  }
+</script>
+</body>
+</html>
