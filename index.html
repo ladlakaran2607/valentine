@@ -95,6 +95,112 @@
     box-shadow: 0 0 10px rgba(255, 107, 138, 0.4);
   }
 
+  /* ===== MUSIC BUTTON ===== */
+  .music-btn-wrap {
+    position: relative;
+    z-index: 10;
+    margin-bottom: 20px;
+  }
+
+  .music-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border: 1px solid rgba(255, 107, 138, 0.3);
+    border-radius: 50px;
+    background: rgba(255, 107, 138, 0.08);
+    color: #ff8fa3;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    animation: musicPulse 1.8s ease-in-out infinite;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 20px rgba(255, 107, 138, 0.08);
+  }
+
+  @keyframes musicPulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 0 20px rgba(255, 107, 138, 0.08);
+      border-color: rgba(255, 107, 138, 0.3);
+    }
+    50% {
+      transform: scale(1.08);
+      box-shadow: 0 0 30px rgba(255, 107, 138, 0.2), 0 0 60px rgba(255, 107, 138, 0.08);
+      border-color: rgba(255, 107, 138, 0.5);
+    }
+  }
+
+  .music-btn.playing {
+    animation: none;
+    background: rgba(255, 107, 138, 0.15);
+    border-color: rgba(255, 107, 138, 0.4);
+    box-shadow: 0 0 25px rgba(255, 107, 138, 0.15);
+  }
+
+  .music-btn .music-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .music-btn .music-icon.playing-icon {
+    animation: musicIconDance 0.6s ease-in-out infinite alternate;
+  }
+
+  @keyframes musicIconDance {
+    0% { transform: rotate(-8deg) scale(1); }
+    100% { transform: rotate(8deg) scale(1.1); }
+  }
+
+  .music-btn .music-label {
+    white-space: nowrap;
+  }
+
+  /* Sound wave bars for playing state */
+  .sound-bars {
+    display: none;
+    align-items: flex-end;
+    gap: 2px;
+    height: 16px;
+    margin-left: 4px;
+  }
+
+  .music-btn.playing .sound-bars {
+    display: flex;
+  }
+
+  .sound-bar {
+    width: 3px;
+    border-radius: 2px;
+    background: #ff8fa3;
+    animation: soundWave 0.8s ease-in-out infinite;
+  }
+
+  .sound-bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+  .sound-bar:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+  .sound-bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+  .sound-bar:nth-child(4) { height: 14px; animation-delay: 0.1s; }
+
+  @keyframes soundWave {
+    0%, 100% { transform: scaleY(0.4); }
+    50% { transform: scaleY(1); }
+  }
+
+  /* Hidden YouTube player */
+  .yt-player-wrap {
+    position: fixed;
+    bottom: -200px;
+    left: -200px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+  }
+
   /* ===== CAROUSEL ===== */
   .carousel-wrapper {
     position: relative;
@@ -392,6 +498,25 @@
   </div>
 </div>
 
+<!-- Music button -->
+<div class="music-btn-wrap">
+  <button class="music-btn" id="musicBtn">
+    <span class="music-icon" id="musicIcon">🎵</span>
+    <span class="music-label" id="musicLabel">Tap to play music</span>
+    <div class="sound-bars">
+      <div class="sound-bar"></div>
+      <div class="sound-bar"></div>
+      <div class="sound-bar"></div>
+      <div class="sound-bar"></div>
+    </div>
+  </button>
+</div>
+
+<!-- Hidden YouTube player -->
+<div class="yt-player-wrap">
+  <div id="ytPlayer"></div>
+</div>
+
 <!-- Carousel -->
 <div class="carousel-wrapper" id="carouselWrapper">
   <div class="card-stack" id="cardStack">
@@ -471,7 +596,75 @@
   </div>
 </div>
 
+<!-- YouTube IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
+  // ===== MUSIC / YOUTUBE =====
+  let player;
+  let musicPlaying = false;
+
+  // YouTube IFrame API callback
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('ytPlayer', {
+      height: '1',
+      width: '1',
+      videoId: 'Ky2vKTsEV1w',
+      playerVars: {
+        autoplay: 0,
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
+        loop: 1,
+        playlist: 'Ky2vKTsEV1w',
+        modestbranding: 1,
+        rel: 0,
+        playsinline: 1
+      },
+      events: {
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange
+      }
+    });
+  }
+
+  function onPlayerReady(event) {
+    // Player is ready, waiting for user tap
+  }
+
+  function onPlayerStateChange(event) {
+    // If video ends, replay (backup for loop)
+    if (event.data === YT.PlayerState.ENDED) {
+      player.seekTo(0);
+      player.playVideo();
+    }
+  }
+
+  // Music button handler
+  document.getElementById('musicBtn').addEventListener('click', () => {
+    const btn = document.getElementById('musicBtn');
+    const icon = document.getElementById('musicIcon');
+    const label = document.getElementById('musicLabel');
+
+    if (!musicPlaying) {
+      if (player && player.playVideo) {
+        player.playVideo();
+        musicPlaying = true;
+        btn.classList.add('playing');
+        icon.classList.add('playing-icon');
+        label.textContent = 'Now playing';
+      }
+    } else {
+      if (player && player.pauseVideo) {
+        player.pauseVideo();
+        musicPlaying = false;
+        btn.classList.remove('playing');
+        icon.classList.remove('playing-icon');
+        label.textContent = 'Tap to play music';
+      }
+    }
+  });
+
   // ===== SPARKLE BG =====
   const sparkleBg = document.getElementById('sparkleBg');
   const sparkleEmojis = ['✨', '💫', '💕', '💗', '♥️', '🌸', '⭐'];
