@@ -298,9 +298,124 @@
     background: linear-gradient(160deg, #f8bbd0, #f06292);
     border: 1px solid rgba(233, 30, 99, 0.25);
     box-shadow: 0 8px 40px rgba(233, 30, 99, 0.18);
+    justify-content: flex-start;
+    padding-top: 24px;
   }
   .card-5 .card-number { color: rgba(255,255,255,0.6); }
   .card-5 .card-text { color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.1); }
+
+  /* Chat bubbles */
+  .chat-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 6px;
+  }
+
+  .chat-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    max-width: 85%;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: chatAppear 0.4s ease forwards;
+  }
+
+  .chat-row.left { align-self: flex-start; }
+  .chat-row.right { align-self: flex-end; flex-direction: row-reverse; }
+
+  /* Animations paused until card is active */
+  .card-5 .chat-row,
+  .card-5 .chat-caption {
+    animation-play-state: paused;
+  }
+
+  .card-5.chat-active .chat-row,
+  .card-5.chat-active .chat-caption {
+    animation-play-state: running;
+  }
+
+  .chat-row:nth-child(1) { animation-delay: 0.3s; }
+  .chat-row:nth-child(2) { animation-delay: 0.9s; }
+  .chat-row:nth-child(3) { animation-delay: 1.4s; }
+  .chat-row:nth-child(4) { animation-delay: 2.0s; }
+
+  @keyframes chatAppear {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .chat-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    font-weight: 700;
+    font-family: 'Quicksand', sans-serif;
+  }
+
+  .chat-row.left .chat-avatar {
+    background: rgba(255, 255, 255, 0.85);
+    color: #c92a5a;
+  }
+
+  .chat-row.right .chat-avatar {
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+  }
+
+  .chat-bubble {
+    padding: 9px 14px;
+    border-radius: 16px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+    position: relative;
+  }
+
+  .chat-row.left .chat-bubble {
+    background: rgba(255, 255, 255, 0.85);
+    color: #6d2040;
+    border-bottom-left-radius: 4px;
+  }
+
+  .chat-row.right .chat-bubble {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  .chat-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    opacity: 0.5;
+    text-transform: uppercase;
+  }
+
+  .chat-row.left .chat-label { color: #c92a5a; }
+  .chat-row.right .chat-label { color: rgba(255,255,255,0.7); text-align: right; }
+
+  .chat-caption {
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: #fff;
+    margin-top: 14px;
+    opacity: 0;
+    animation: chatAppear 0.5s ease forwards;
+    animation-delay: 2.6s;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.1);
+  }
 
   /* Stacked behind cards - slight scale/offset */
   .card.behind-1 {
@@ -522,21 +637,51 @@
   <div class="card-stack" id="cardStack">
 
     <div class="card card-5 behind-2" data-index="4">
-      <div class="card-emoji">💍</div>
+      <div class="card-emoji">💬</div>
       <div class="card-number">5 / 5</div>
-      <div class="card-text">
-        I can't wait to <strong>annoy you</strong><br>
-        for the rest of our lives. 😏💕
+
+      <div class="chat-area">
+        <div class="chat-row left">
+          <div class="chat-avatar">J</div>
+          <div>
+            <div class="chat-label">Jyoti</div>
+            <div class="chat-bubble">Hi kkrh</div>
+          </div>
+        </div>
+
+        <div class="chat-row right">
+          <div class="chat-avatar">K</div>
+          <div>
+            <div class="chat-label">Karan</div>
+            <div class="chat-bubble">walk chal rha hai</div>
+          </div>
+        </div>
+
+        <div class="chat-row right">
+          <div class="chat-avatar">K</div>
+          <div>
+            <div class="chat-bubble">Tum?</div>
+          </div>
+        </div>
+
+        <div class="chat-row left">
+          <div class="chat-avatar">J</div>
+          <div>
+            <div class="chat-bubble">Bethi hu</div>
+          </div>
+        </div>
       </div>
+
+      <div class="chat-caption">Aise krte krte... zindagi khushi se nikal jaegi 💕</div>
     </div>
 
     <div class="card card-4 behind-2" data-index="3">
       <div class="card-emoji">🥹</div>
       <div class="card-number">4 / 5</div>
       <div class="card-text">
-        You're my best friend,<br>
-        my forever person,<br>
-        and soon... <strong>my wife.</strong>
+        Meri best friend, meri gf,<br>
+        meri future wife...<br><br>
+        <strong>sab tum hi ho.</strong>
       </div>
     </div>
 
@@ -544,20 +689,20 @@
       <div class="card-emoji">😏</div>
       <div class="card-number">3 / 5</div>
       <div class="card-text">
-        But honestly?<br>
-        Every moment with you is worth it.<br><br>
-        Even the ones where you take<br>
-        <strong>2 hours to get ready.</strong> 💅
+        Kbhi ek dusre ko ache lagte hain<br>
+        Kabhi gussa aata hai<br><br>
+        Par ye malum hai<br>
+        <strong>ki dono dil se bure nahi hain.</strong> 💙
       </div>
     </div>
 
     <div class="card card-2 behind-1" data-index="1">
-      <div class="card-emoji">😅</div>
+      <div class="card-emoji">😊</div>
       <div class="card-number">2 / 5</div>
       <div class="card-text">
-        Ever since I met you,<br>
-        my life has been...<br><br>
-        <strong>significantly more expensive.</strong> 🛍️
+        Jabse tum aayi ho,<br>
+        meri life mein...<br><br>
+        <strong>mein khush zyada rehta hun.</strong> 📈
       </div>
     </div>
 
@@ -566,8 +711,8 @@
       <div class="card-number">1 / 5</div>
       <div class="card-text">
         Dear Jyoti...<br><br>
-        I wanted to tell you<br>
-        <strong>something important</strong> today.
+        Kuch btana hai tumhe aaj<br>
+        <strong>kuch important</strong>.
       </div>
     </div>
 
@@ -587,11 +732,10 @@
     <h1>Happy Valentine's Day</h1>
     <div class="finale-sub">Jyoti! 🌹</div>
     <div class="finale-msg">
-      From the first moment to forever —<br>
-      you're the only one I choose.<br>
-      Today, tomorrow, and every day after.
+      Jeevansathi app se Jeevansathi life ki —<br>
+      you're the only one I choose.
     </div>
-    <div class="finale-sign">Forever yours, Karan 💌</div>
+    <div class="finale-sign">Karan 💌</div>
     <div class="finale-hearts">💕💖💕</div>
   </div>
 </div>
@@ -725,6 +869,12 @@
     dots.forEach((d, i) => {
       d.classList.toggle('active', i === currentIndex);
     });
+
+    // Activate chat animation when card 5 becomes current
+    const card5 = cards.find(c => parseInt(c.dataset.index) === 4);
+    if (card5 && currentIndex === 4) {
+      card5.classList.add('chat-active');
+    }
 
     // Hide swipe hint on last card after swipe
     if (currentIndex >= totalCards) {
